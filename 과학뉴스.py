@@ -5,8 +5,8 @@ x = dt.datetime.now()
 headers = \
 {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'}
 
-for j in (0, 1, 2, 3, 4):
-    for i in (1, 2, 3):
+for i in ():
+    for j in range(3):
         if x.day - j < 1:
             
             if x.month - 1 < 1:
@@ -40,7 +40,7 @@ for j in (0, 1, 2, 3, 4):
         date = '{0}{1}{2}'.format(y, month, day)
 
 
-        url = 'https://news.naver.com/main/list.naver?mode=LS2D&sid2=731&sid1=105&mid=shm&date={0}&page={1}'.format(date, i)
+        url = 'https://news.naver.com/main/list.naver?mode=LS2D&sid2={0}&sid1=105&mid=shm&date={1}&page=1'.format(i, date)
         site = requests.get(url, headers=headers)
         source_data = site.text
 
@@ -48,7 +48,7 @@ for j in (0, 1, 2, 3, 4):
 
         print()
         print()
-        print("날짜 : {0}  페이지 : {1}\n".format(date, i))
+        print("시드 : {0}  날짜 : {1}\n".format(i, date))
 
         for k in range(count):
             pos1= source_data.find('width="106" height="72" alt=') + len('width="106" height="72" alt=')
