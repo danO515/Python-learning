@@ -1,0 +1,46 @@
+import requests
+
+headers = \
+{'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'}
+
+list_url = 'https://www.todayhumor.co.kr/board/list.php?table=bestofbest'
+site = requests.get(list_url, headers=headers)
+source_data = site.text
+
+count = source_data.count('&page=1" target="_top">')
+
+for i in range(count):
+    
+    num_pos1 = source_data.find('=/board/view.php?table=bestofbest&no=') + len('=/board/view.php?table=bestofbest&no=')
+    source_data = source_data[num_pos1:]
+
+    num_pos2 = source_data.find('&s_no=')
+    num_data = source_data[:num_pos2]
+
+
+    page_url = 'https://www.todayhumor.co.kr/board/view.php?table=bestofbest&no={0}&s_no={1}&page=1'.format(num_data, num_data)
+    image_site = requests.get(page_url, headers=headers)
+    source_image_data = image_site.text
+
+
+    pos1 = source_data.find('&page=1" target="_top">') + len('&page=1" target="_top">')
+    source_data = source_data[pos1:]
+
+    pos2 = source_data.find('</a><span')
+    extract_data = source_data[:pos2]
+
+    source_data = source_data[pos2+1:]
+    print(i+1,'제목 : ', extract_data)
+    print(page_url)
+    
+'''
+    pos1 = source_image_data.find('<div class="upfile" id="upfile1">') + len('<div class="upfile" id="upfile1">') + 16
+    source_image_data = source_image_data[pos1:]
+
+    pos2 = source_image_data.find('" width="219" height="251"')
+    extract_image_data = source_image_data[:pos2]
+
+    source_image_data = source_image_data[pos2+1:]
+    print('\n    이미지 : ', extract_image_data)
+
+'''
